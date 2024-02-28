@@ -562,7 +562,7 @@ namespace WoWDeveloperAssistant.Creature_Scripts_Creator
         {
             string body = "";
 
-            body += $"\r\n\r\n{AddSpacesCount(4)}enum eSpells\r\n{AddSpacesCount(4)}{{";
+            body += $"\r\n\r\n{AddSpacesCount(4)}enum Spells\r\n{AddSpacesCount(4)}{{";
 
             for (int l = 0; l < mainForm.dataGridView_CreatureScriptsCreator_Spells.RowCount; l++)
             {
@@ -570,11 +570,11 @@ namespace WoWDeveloperAssistant.Creature_Scripts_Creator
 
                 if (l == 0)
                 {
-                    body += $"\r\n{AddSpacesCount(8)}{NormilizeName(spell.name)} = {spell.spellId}";
+                    body += $"\r\n{AddSpacesCount(8)}SPELL_{NormilizeName(spell.name)} = {spell.spellId}";
                 }
                 else
                 {
-                    body += $",\r\n{AddSpacesCount(8)}{NormilizeName(spell.name)} = {spell.spellId}";
+                    body += $",\r\n{AddSpacesCount(8)}SPELL_{NormilizeName(spell.name)} = {spell.spellId}";
                 }
             }
 
@@ -592,7 +592,7 @@ namespace WoWDeveloperAssistant.Creature_Scripts_Creator
 
             if (hasCombatSpells)
             {
-                body += $"\r\n\r\n{AddSpacesCount(4)}enum eEvents\r\n{AddSpacesCount(4)}{{";
+                body += $"\r\n\r\n{AddSpacesCount(4)}enum Events\r\n{AddSpacesCount(4)}{{";
 
                 for (int l = 0; l < mainForm.dataGridView_CreatureScriptsCreator_Spells.RowCount; l++)
                 {
@@ -600,11 +600,11 @@ namespace WoWDeveloperAssistant.Creature_Scripts_Creator
 
                     if (!spell.isDeathSpell && l == 0)
                     {
-                        body += $"\r\n{AddSpacesCount(8)}Cast{NormilizeName(spell.name)} = {l + 1}";
+                        body += $"\r\n{AddSpacesCount(8)}EVENT_{NormilizeName(spell.name)} = {l + 1}";
                     }
                     else if (!spell.isDeathSpell && l > 0)
                     {
-                        body += $",\r\n{AddSpacesCount(8)}Cast{NormilizeName(spell.name)} = {l + 1}";
+                        body += $",\r\n{AddSpacesCount(8)}EVENT_{NormilizeName(spell.name)} = {l + 1}";
                     }
                 }
 
@@ -641,16 +641,16 @@ namespace WoWDeveloperAssistant.Creature_Scripts_Creator
                 {
                     if (IsCreatureHasAggroText(creature.entry))
                     {
-                        body += $"\r\n\r\n{AddSpacesCount(8)}events.ScheduleEvent(eEvents::Cast{NormilizeName(spell.name)}, " + (minCastTime != maxCastTime ? $"urand({minCastTime}, {maxCastTime})" : $"{minCastTime}")  + ");";
+                        body += $"\r\n\r\n{AddSpacesCount(8)}events.ScheduleEvent(Events::EVENT_{NormilizeName(spell.name)}, " + (minCastTime != maxCastTime ? $"urand({minCastTime}, {maxCastTime})" : $"{minCastTime}")  + ");";
                     }
                     else
                     {
-                        body += $"\r\n{AddSpacesCount(8)}events.ScheduleEvent(eEvents::Cast{NormilizeName(spell.name)}, " + (minCastTime != maxCastTime ? $"urand({minCastTime}, {maxCastTime})" : $"{minCastTime}") + ");";
+                        body += $"\r\n{AddSpacesCount(8)}events.ScheduleEvent(Events::EVENT_{NormilizeName(spell.name)}, " + (minCastTime != maxCastTime ? $"urand({minCastTime}, {maxCastTime})" : $"{minCastTime}") + ");";
                     }
                 }
                 else if (!spell.isDeathSpell && l > 0)
                 {
-                    body += $"\r\n{AddSpacesCount(8)}events.ScheduleEvent(eEvents::Cast{NormilizeName(spell.name)}, " + (minCastTime != maxCastTime ? $"urand({minCastTime}, {maxCastTime})" : $"{minCastTime}") + ");";
+                    body += $"\r\n{AddSpacesCount(8)}events.ScheduleEvent(Events::EVENT_{NormilizeName(spell.name)}, " + (minCastTime != maxCastTime ? $"urand({minCastTime}, {maxCastTime})" : $"{minCastTime}") + ");";
                 }
             }
 
@@ -677,19 +677,19 @@ namespace WoWDeveloperAssistant.Creature_Scripts_Creator
 
                 if (!spell.isDeathSpell && l + 1 < mainForm.dataGridView_CreatureScriptsCreator_Spells.RowCount)
                 {
-                    body += $"\r\n{AddSpacesCount(12)}case eEvents::Cast{NormilizeName(spell.name)}:\r\n{AddSpacesCount(12)}{{\r\n{AddSpacesCount(16)}" + (spell.GetTargetType() == 1 ? "DoCast" : "DoCastVictim") + $"(eSpells::{NormilizeName(spell.name)});";
+                    body += $"\r\n{AddSpacesCount(12)}case Events::EVENT_{NormilizeName(spell.name)}:\r\n{AddSpacesCount(12)}{{\r\n{AddSpacesCount(16)}" + (spell.GetTargetType() == 1 ? "DoCast" : "DoCastVictim") + $"(Spells::SPELL_{NormilizeName(spell.name)});";
 
                     if (minRepeatTime == maxRepeatTime)
                     {
-                        body += $"\r\n{AddSpacesCount(16)}events.ScheduleEvent(eEvents::Cast{NormilizeName(spell.name)}, {minRepeatTime});";
+                        body += $"\r\n{AddSpacesCount(16)}events.ScheduleEvent(Events::EVENT_{NormilizeName(spell.name)}, {minRepeatTime});";
                     }
                     else if (minRepeatTime == 0 && maxRepeatTime == 0)
                     {
-                        body += $"\r\n{AddSpacesCount(16)}events.ScheduleEvent(eEvents::Cast{NormilizeName(spell.name)}, 1);";
+                        body += $"\r\n{AddSpacesCount(16)}events.ScheduleEvent(Events::EVENT_{NormilizeName(spell.name)}, 1);";
                     }
                     else
                     {
-                        body += $"\r\n{AddSpacesCount(16)}events.ScheduleEvent(eEvents::Cast{NormilizeName(spell.name)}, urand({minRepeatTime}, {maxRepeatTime}));";
+                        body += $"\r\n{AddSpacesCount(16)}events.ScheduleEvent(Events::EVENT_{NormilizeName(spell.name)}, urand({minRepeatTime}, {maxRepeatTime}));";
                     }
 
                     body += $"\r\n{AddSpacesCount(16)}break;";
@@ -697,19 +697,19 @@ namespace WoWDeveloperAssistant.Creature_Scripts_Creator
                 }
                 else if (!spell.isDeathSpell && l + 1 >= mainForm.dataGridView_CreatureScriptsCreator_Spells.RowCount)
                 {
-                    body += $"\r\n{AddSpacesCount(12)}case eEvents::Cast{NormilizeName(spell.name)}:\r\n{AddSpacesCount(12)}{{\r\n{AddSpacesCount(16)}" + (spell.GetTargetType() == 1 ? "DoCast" : "DoCastVictim") + $"(eSpells::{NormilizeName(spell.name)});";
+                    body += $"\r\n{AddSpacesCount(12)}case Events::EVENT_{NormilizeName(spell.name)}:\r\n{AddSpacesCount(12)}{{\r\n{AddSpacesCount(16)}" + (spell.GetTargetType() == 1 ? "DoCast" : "DoCastVictim") + $"(Spells::SPELL_{NormilizeName(spell.name)});";
 
                     if (minRepeatTime == maxRepeatTime)
                     {
-                        body += $"\r\n{AddSpacesCount(16)}events.ScheduleEvent(eEvents::Cast{NormilizeName(spell.name)}, {minRepeatTime});";
+                        body += $"\r\n{AddSpacesCount(16)}events.ScheduleEvent(Events::EVENT_{NormilizeName(spell.name)}, {minRepeatTime});";
                     }
                     else if (minRepeatTime == 0 && maxRepeatTime == 0)
                     {
-                        body += $"\r\n{AddSpacesCount(16)}events.ScheduleEvent(eEvents::Cast{NormilizeName(spell.name)}, 0);";
+                        body += $"\r\n{AddSpacesCount(16)}events.ScheduleEvent(Events::EVENT_{NormilizeName(spell.name)}, 0);";
                     }
                     else
                     {
-                        body += $"\r\n{AddSpacesCount(16)}events.ScheduleEvent(eEvents::Cast{NormilizeName(spell.name)}, urand({minRepeatTime}, {maxRepeatTime}));";
+                        body += $"\r\n{AddSpacesCount(16)}events.ScheduleEvent(Events::EVENT_{NormilizeName(spell.name)}, urand({minRepeatTime}, {maxRepeatTime}));";
                     }
 
                     body += $"\r\n{AddSpacesCount(16)}break;";
@@ -730,7 +730,7 @@ namespace WoWDeveloperAssistant.Creature_Scripts_Creator
             Regex nonWordRegex = new Regex(@"\W+");
             string normilizedString = line;
 
-            normilizedString = normilizedString.Replace(" ", "");
+            normilizedString = normilizedString.Replace(" ", "_");
 
             foreach (char character in normilizedString)
             {
@@ -743,7 +743,7 @@ namespace WoWDeveloperAssistant.Creature_Scripts_Creator
                 }
             }
 
-            return normilizedString;
+            return normilizedString.ToUpper();
         }
 
         public static uint GetCreatureEntryByGuid(string creatureGuid)

@@ -130,7 +130,7 @@ namespace WoWDeveloperAssistant.Core_Script_Templates
             { "EnterCombat",
                 new Dictionary<string, string>
                 {
-                    { "ScheduleEvent", "events.ScheduleEvent(eEvents::EventName, 10000);" }
+                    { "ScheduleEvent", "events.ScheduleEvent(Events::EventName, 10000);" }
                 }
             },
 
@@ -141,7 +141,7 @@ namespace WoWDeveloperAssistant.Core_Script_Templates
                     { "CheckPlayerOrDespawn", "CheckPlayerOrDespawn(p_Diff, eQuests::QuestId);" },
                     { "DefaultPlayerCheck",   "if (me->isSummon() && UpdateCheckTimer(p_Diff))" + "\r\n" +  Utils.AddSpacesCount(12) + "{" + "\r\n" + Utils.AddSpacesCount(16) + "Player* l_Player = me->GetAnyPlayerOwner();" + "\r\n" + Utils.AddSpacesCount(16) + "if (!l_Player || !l_Player->IsInWorld() || !l_Player->HasQuest(eQuests::QuestId))" + "\r\n" + Utils.AddSpacesCount(16) + "{" + "\r\n" + Utils.AddSpacesCount(20) + "me->DespawnOrUnsummon();" + "\r\n" + Utils.AddSpacesCount(16) + "}" + "\r\n" + Utils.AddSpacesCount(12) + "}" },
                     { "CombatChecks",         "if (!UpdateVictim())" + "\r\n" + Utils.AddSpacesCount(12) + "return;" + "\r\n\r\n" + Utils.AddSpacesCount(8) + "events.Update(p_Diff);" + "\r\n\r\n" + Utils.AddSpacesCount(8) + "if (me->HasUnitState(UNIT_STATE_CASTING))" + "\r\n" + Utils.AddSpacesCount(12) + "return;" },
-                    { "EventsSwitch",         "switch (events.ExecuteEvent())" + "\r\n" + Utils.AddSpacesCount(8) + "{" + "\r\n" + Utils.AddSpacesCount(12) + "case eEvents::EventName:" + "\r\n" + Utils.AddSpacesCount(12) + "{" + "\r\n" + Utils.AddSpacesCount(16) + "events.ScheduleEvent(eEvents::Eventname, 10000);" + "\r\n" + Utils.AddSpacesCount(16) + "break;" + "\r\n" + Utils.AddSpacesCount(12) + "}" + "\r\n" + Utils.AddSpacesCount(12) + "default:" + "\r\n" + Utils.AddSpacesCount(16) + "break;" + "\r\n" + Utils.AddSpacesCount(8) + "}" },
+                    { "EventsSwitch",         "switch (events.ExecuteEvent())" + "\r\n" + Utils.AddSpacesCount(8) + "{" + "\r\n" + Utils.AddSpacesCount(12) + "case Events::EventName:" + "\r\n" + Utils.AddSpacesCount(12) + "{" + "\r\n" + Utils.AddSpacesCount(16) + "events.ScheduleEvent(Events::Eventname, 10000);" + "\r\n" + Utils.AddSpacesCount(16) + "break;" + "\r\n" + Utils.AddSpacesCount(12) + "}" + "\r\n" + Utils.AddSpacesCount(12) + "default:" + "\r\n" + Utils.AddSpacesCount(16) + "break;" + "\r\n" + Utils.AddSpacesCount(8) + "}" },
                     { "DoMeleeAttack",        "DoMeleeAttackIfReady();" }
                 }
             },
@@ -221,17 +221,17 @@ namespace WoWDeveloperAssistant.Core_Script_Templates
             if (IsHookBodiesContainItem("SpellIdSwitch", hookBodiesTreeView) ||
                 IsHookBodiesContainItem("EventsSwitch", hookBodiesTreeView))
             {
-                body += "\r\n\r\n" + Utils.AddSpacesCount(4) + "enum eSpells" + "\r\n" + Utils.AddSpacesCount(4) + "{" + "\r\n" + Utils.AddSpacesCount(16) + "\r\n" + Utils.AddSpacesCount(4) + "};";
+                body += "\r\n\r\n" + Utils.AddSpacesCount(4) + "enum Spells" + "\r\n" + Utils.AddSpacesCount(4) + "{" + "\r\n" + Utils.AddSpacesCount(16) + "\r\n" + Utils.AddSpacesCount(4) + "};";
             }
 
             if (IsHookBodiesContainItem("PointIdSwitch", hookBodiesTreeView))
             {
-                body += "\r\n\r\n" + Utils.AddSpacesCount(4) + "enum ePoints" + "\r\n" + Utils.AddSpacesCount(4) + "{" + "\r\n" + Utils.AddSpacesCount(16) + "\r\n" + Utils.AddSpacesCount(4) + "};";
+                body += "\r\n\r\n" + Utils.AddSpacesCount(4) + "enum Points" + "\r\n" + Utils.AddSpacesCount(4) + "{" + "\r\n" + Utils.AddSpacesCount(16) + "\r\n" + Utils.AddSpacesCount(4) + "};";
             }
 
             if (IsHookBodiesContainItem("EventsSwitch", hookBodiesTreeView))
             {
-                body += "\r\n\r\n" + Utils.AddSpacesCount(4) + "enum eEvents" + "\r\n" + Utils.AddSpacesCount(4) + "{" + "\r\n" + Utils.AddSpacesCount(16) + "\r\n" + Utils.AddSpacesCount(4) + "};";
+                body += "\r\n\r\n" + Utils.AddSpacesCount(4) + "enum Events" + "\r\n" + Utils.AddSpacesCount(4) + "{" + "\r\n" + Utils.AddSpacesCount(16) + "\r\n" + Utils.AddSpacesCount(4) + "};";
             }
 
             return body;
