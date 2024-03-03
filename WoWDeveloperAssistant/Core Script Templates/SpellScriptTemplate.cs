@@ -396,6 +396,7 @@ namespace WoWDeveloperAssistant.Core_Script_Templates
                 scriptBody += "class " + scriptName + " : public " + "SpellScript" + "\r\n";
                 scriptBody += "{" + "\r\n";
                 scriptBody += Utils.AddSpacesCount(4) + "PrepareSpellScript(" + scriptName + ");";
+                scriptBody += GetValidateSpellInfoBody(defaultName);
                 scriptBody += GetHooksBody(hooksListBox, hookBodiesTreeView);
                 scriptBody += "\r\n" + Utils.AddSpacesCount(4) + "void Register() override" + "\r\n";
                 scriptBody += Utils.AddSpacesCount(4) + "{" + "\r\n";
@@ -408,6 +409,7 @@ namespace WoWDeveloperAssistant.Core_Script_Templates
                 scriptBody += "class " + scriptName + " : public " + "AuraScript" + "\r\n";
                 scriptBody += "{" + "\r\n";
                 scriptBody += Utils.AddSpacesCount(4) + "PrepareAuraScript(" + scriptName + ");" + "\r\n";
+                scriptBody += GetValidateSpellInfoBody(defaultName);
                 scriptBody += GetHooksBody(hooksListBox, hookBodiesTreeView, true);
                 scriptBody += "\r\n\r\n" + Utils.AddSpacesCount(4) + "void Register() override" + "\r\n";
                 scriptBody += Utils.AddSpacesCount(4) + "{" + "\r\n";
@@ -422,6 +424,7 @@ namespace WoWDeveloperAssistant.Core_Script_Templates
                 scriptBody += "class " + scriptName + " : public " + (IsAuraScript(hooksListBox) ? "AuraScript" : "SpellScript") + "\r\n";
                 scriptBody += "{" + "\r\n";
                 scriptBody += Utils.AddSpacesCount(4) + (IsAuraScript(hooksListBox) ? "PrepareAuraScript(" : "PrepareSpellScript(") + scriptName + ");";
+                scriptBody += GetValidateSpellInfoBody(defaultName);
                 scriptBody += GetHooksBody(hooksListBox, hookBodiesTreeView, IsAuraScript(hooksListBox));
                 scriptBody += "\r\n\r\n" + Utils.AddSpacesCount(4) + "void Register() override" + "\r\n";
                 scriptBody += Utils.AddSpacesCount(4) + "{" + "\r\n";
@@ -607,6 +610,19 @@ namespace WoWDeveloperAssistant.Core_Script_Templates
 
                 body += "\r\n" + Utils.AddSpacesCount(4) + "}";
             }
+
+            return body;
+        }
+
+        private static string GetValidateSpellInfoBody(string spellName)
+        {
+            string spellNameUpper = spellName.ToUpper().Replace(" ", "_");
+            string body = "";
+
+            body += "\r\n\r\n" + Utils.AddSpacesCount(4) + "bool Validate(SpellInfo const* /*spellInfo*/) override" + "\r\n";
+            body += Utils.AddSpacesCount(4) + "{" + "\r\n";
+            body += Utils.AddSpacesCount(8) + "return ValidateSpellInfo( {" + $"SPELL_{spellNameUpper}" + "} );";
+            body += "\r\n" + Utils.AddSpacesCount(4) + "}" + "\r\n";
 
             return body;
         }
